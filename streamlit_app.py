@@ -28,6 +28,7 @@ from wordcloud import WordCloud
 
 import spacy
 
+nltk.download('punkt')
 nltk.download('stopwords')
 
 os.environ['AWS_ACCESS_KEY_ID'] = st.secrets.AWS_ACCESS_KEY_ID
