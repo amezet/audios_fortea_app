@@ -1,0 +1,74 @@
+﻿Orden;Testamento;Grupo;Libro;Libro_sin
+1;Antiguo Testamento;Pentateuco;Génesis;Génesis
+2;Antiguo Testamento;Pentateuco;Éxodo;Éxodo
+3;Antiguo Testamento;Pentateuco;Levítico;Levítico
+4;Antiguo Testamento;Pentateuco;Números;Números
+5;Antiguo Testamento;Pentateuco;Deuteronomio;Deuteronomio
+6;Antiguo Testamento;Históricos;Josué;Josué
+7;Antiguo Testamento;Históricos;Jueces;Jueces
+8;Antiguo Testamento;Históricos;Rut;Rut
+9;Antiguo Testamento;Históricos;1 Samuel;Samuel
+10;Antiguo Testamento;Históricos;2 Samuel;Samuel
+11;Antiguo Testamento;Históricos;1 Reyes;Reyes
+12;Antiguo Testamento;Históricos;2 Reyes;Reyes
+13;Antiguo Testamento;Históricos;1 Crónicas;Crónicas
+14;Antiguo Testamento;Históricos;2 Crónicas;Crónicas
+15;Antiguo Testamento;Históricos;Esdras;Esdras
+16;Antiguo Testamento;Históricos;Nehemías;Nehemías
+17;Antiguo Testamento;Históricos;Tobías;Tobías
+18;Antiguo Testamento;Históricos;Judit;Judit
+19;Antiguo Testamento;Históricos;Ester;Ester
+20;Antiguo Testamento;Históricos;1 Macabeos;Macabeos
+21;Antiguo Testamento;Históricos;2 Macabeos;Macabeos
+22;Antiguo Testamento;Poéticos y Sapienciales;Job;Job
+23;Antiguo Testamento;Poéticos y Sapienciales;Salmos;Salmos
+24;Antiguo Testamento;Poéticos y Sapienciales;Proverbios;Proverbios
+25;Antiguo Testamento;Poéticos y Sapienciales;Eclesiastés;Eclesiastés
+26;Antiguo Testamento;Poéticos y Sapienciales;Cantar de los Cantares;Cantar de los Cantares
+27;Antiguo Testamento;Poéticos y Sapienciales;Sabiduría;Sabiduría
+28;Antiguo Testamento;Poéticos y Sapienciales;Eclesiástico;Eclesiástico
+29;Antiguo Testamento;Proféticos;Isaías;Isaías
+30;Antiguo Testamento;Proféticos;Jeremías;Jeremías
+31;Antiguo Testamento;Proféticos;Lamentaciones;Lamentaciones
+32;Antiguo Testamento;Proféticos;Baruc;Baruc
+33;Antiguo Testamento;Proféticos;Ezequiel;Ezequiel
+34;Antiguo Testamento;Proféticos;Daniel;Daniel
+35;Antiguo Testamento;Proféticos;Oseas;Oseas
+36;Antiguo Testamento;Proféticos;Joel;Joel
+37;Antiguo Testamento;Proféticos;Amós;Amós
+38;Antiguo Testamento;Proféticos;Abdías;Abdías
+39;Antiguo Testamento;Proféticos;Jonás;Jonás
+40;Antiguo Testamento;Proféticos;Miqueas;Miqueas
+41;Antiguo Testamento;Proféticos;Nahum;Nahum
+42;Antiguo Testamento;Proféticos;Habacuc;Habacuc
+43;Antiguo Testamento;Proféticos;Sofonías;Sofonías
+44;Antiguo Testamento;Proféticos;Ageo;Ageo
+45;Antiguo Testamento;Proféticos;Zacarías;Zacarías
+46;Antiguo Testamento;Proféticos;Malaquías;Malaquías
+47;Nuevo Testamento;Evangelios;Mateo;Mateo
+48;Nuevo Testamento;Evangelios;Marcos;Marcos
+49;Nuevo Testamento;Evangelios;Lucas;Lucas
+50;Nuevo Testamento;Evangelios;Juan;Juan
+51;Nuevo Testamento;Hechos Apóstoles;Hechos;Hechos
+52;Nuevo Testamento;Escritos San Pablo;Romanos;Romanos
+53;Nuevo Testamento;Escritos San Pablo;1 Corintios;Corintios
+54;Nuevo Testamento;Escritos San Pablo;2 Corintios;Corintios
+55;Nuevo Testamento;Escritos San Pablo;Gálatas;Gálatas
+56;Nuevo Testamento;Escritos San Pablo;Efesios;Efesios
+57;Nuevo Testamento;Escritos San Pablo;Filipenses;Filipenses
+58;Nuevo Testamento;Escritos San Pablo;Colosenses;Colosenses
+59;Nuevo Testamento;Escritos San Pablo;1 Tesalonicenses;Tesalonicenses
+60;Nuevo Testamento;Escritos San Pablo;2 Tesalonicenses;Tesalonicenses
+61;Nuevo Testamento;Escritos San Pablo;1 Timoteo;Timoteo
+62;Nuevo Testamento;Escritos San Pablo;2 Timoteo;Timoteo
+63;Nuevo Testamento;Escritos San Pablo;Tito;Tito
+64;Nuevo Testamento;Escritos San Pablo;Filemón;Filemón
+65;Nuevo Testamento;Escritos San Pablo;Hebreos;Hebreos
+66;Nuevo Testamento;Cartas Católicas;Santiago;Santiago
+67;Nuevo Testamento;Cartas Católicas;1 Pedro;Pedro
+68;Nuevo Testamento;Cartas Católicas;2 Pedro;Pedro
+69;Nuevo Testamento;Cartas Católicas;1 Juan;Juan
+70;Nuevo Testamento;Cartas Católicas;2 Juan;Juan
+71;Nuevo Testamento;Cartas Católicas;3 Juan;Juan
+72;Nuevo Testamento;Cartas Católicas;Judas;Judas
+73;Nuevo Testamento;Apocalipsis;Apocalipsis;Apocalipsis
