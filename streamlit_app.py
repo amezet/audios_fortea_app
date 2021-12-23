@@ -26,7 +26,6 @@ from nltk.corpus import stopwords
 
 from wordcloud import WordCloud
 
-from sklearn.metrics.pairwise import cosine_similarity
 
 
 os.environ['AWS_ACCESS_KEY_ID'] = st.secrets.AWS_ACCESS_KEY_ID
@@ -148,31 +147,6 @@ def spans(txt):
         offset = txt.find(token, offset)
         yield token, offset, offset+len(token)
         offset += len(token)
-
-def get_tf_idf_query_similarity_dicc(vectorizer, docs_tfidf, query, palabras_dicc):
-    """
-    vectorizer: TfIdfVectorizer model
-    docs_tfidf: tfidf vectors for all docs
-    query: query doc
-
-    return: cosine similarity between query and all docs
-    """
-    query_tfidf = vectorizer.transform([query])
-    cosineSimilarities = cosine_similarity(query_tfidf, docs_tfidf).flatten()
-    return palabras_dicc[np.argmax(cosineSimilarities)], cosineSimilarities[np.argmax(cosineSimilarities)]
-
-def get_tf_idf_query_similarity_bib(vectorizer, docs_tfidf, query, libros_bib):
-    """
-    vectorizer: TfIdfVectorizer model
-    docs_tfidf: tfidf vectors for all docs
-    query: query doc
-
-    return: cosine similarity between query and all docs
-    """
-    query_tfidf = vectorizer.transform([query])
-    cosineSimilarities = cosine_similarity(query_tfidf, docs_tfidf).flatten()
-    
-    return libros_bib[np.argmax(cosineSimilarities)], cosineSimilarities[np.argmax(cosineSimilarities)]
 
 
 @st.cache
