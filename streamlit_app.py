@@ -45,7 +45,7 @@ st.set_page_config(
 
 directorio_mp3 = 'audios-fortea/mp3/'
 directorio_pkl = './data_pkl/'
-#directorio_json = './json_all/'
+directorio_json = './json_all/'
 directorio_csv = './data_csv/'
 
 @st.cache
