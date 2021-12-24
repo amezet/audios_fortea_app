@@ -417,7 +417,8 @@ if inspeccionar:
     df_libros_Biblia = list_df_libros_Biblia[indice].copy()
     
     resumen = list_resumen[indice]
-    resumen = resumen.replace('\n', '<br>')
+    resumen = resumen.replace('\n', '<br>').replace('**', '__')
+    
     
     resumen_con_negrita = []
     for w in resumen.split(" "):
@@ -447,7 +448,7 @@ if inspeccionar:
         list_token_index.append(token)
     len(list_token_index)
     
-    texto_inicial = " ".join(diccionario['DisplayText'])
+    texto_inicial = " ".join(diccionario['DisplayText']).replace('**', '__')
     
     texto_con_negrita = []
     for w in texto_inicial.split(" "):
