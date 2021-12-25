@@ -274,7 +274,12 @@ if filtrado == False:
         st.markdown('## <font color="red">Tabla</font>', unsafe_allow_html=True)
         st.write('Número de registros: ', df_to_show.shape[0], '/', df.shape[0],
                  '   Horas audio totales seleccionadas: ', np.round(df_to_show.duration_min.sum()/60, 1))
-        st.dataframe( (df_to_show.style.format({'date': "{:%Y/%m/%d}"})
+        
+        opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
+        if opcion_ampliar_info_tabla==False:
+            col_to_show = ['date', 'size', 'file', 'duration_min', 'year']
+        
+        st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}"})
                        .set_properties(**{
                            'font-size': '10pt',
                            })), height=700)
@@ -359,7 +364,12 @@ else:
         st.markdown('## <font color="red">Tabla</font>', unsafe_allow_html=True)
         st.write('Número de registros: ', df_to_show[mask].shape[0], '/', df.shape[0],
                  '   Horas audio totales seleccionadas: ', np.round(df_to_show[mask].duration_min.sum()/60, 1))
-        st.dataframe( (df_to_show[mask].style.format({'date': "{:%Y/%m/%d}"})
+        
+        opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
+        if opcion_ampliar_info_tabla==False:
+            col_to_show = ['date', 'size', 'file', 'duration_min', 'year']
+        
+        st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}"})
                        .set_properties(**{
                            'font-size': '10pt',
                            })), height=700)
