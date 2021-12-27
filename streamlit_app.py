@@ -409,11 +409,13 @@ def read_file_audio(filename):
 ver_audio = st.sidebar.checkbox('Ver Audio', False)
 
 if ver_audio:
-    frag_audio = st.sidebar.selectbox('Marcas tiempo en texto cada ... (min): ', [0, 1, 2, 5, 10])
     audio_bytes = read_file_audio(directorio_mp3 + add_selectbox)
     st.sidebar.audio(audio_bytes, format='audio/ogg')
     
-inspeccionar = st.checkbox('Inspeccionar Texto', False)
+col_1, col_2 = st.columns([7, 3])
+
+with col_1:
+    inspeccionar = st.checkbox('Inspeccionar Texto', False)
 
 
 if inspeccionar:
@@ -459,48 +461,9 @@ if inspeccionar:
         list_token_index.append(token)
     len(list_token_index)
     
-    if frag_audio== 0:
-        texto_inicial = " ".join(diccionario['DisplayText']).replace('**', '__')
-    else:
-        texto_inicial = ''
-        sep = frag_audio*60
-        i_sep = sep*1
-        for i in range(len(diccionario['DisplayText'])):
-            if i==0:
-                texto_inicial = '*[0 min' + ' - ' + str(int(i_sep/60)) + ' min ]*' + '<br>'
-            if diccionario['OffsetDuration'][i][0] <= i_sep:
-                texto_inicial = texto_inicial + diccionario['DisplayText'][i].replace('**', '__')
-            else:
-                texto_inicial = texto_inicial + '<br>' + '*[' + str(int(i_sep/60)) + ' min - ' + str(int(i_sep/60+sep/60)) + ' min ]*' + '<br>' + diccionario['DisplayText'][i].replace('**', '__')
-                i_sep = i_sep + sep
-    
-    texto_con_negrita = []
-    for w in texto_inicial.split(" "):
-        # a,b = 'áéíóúÁÉÍÓÚ','aeiouAEIOU'
-        # trans = str.maketrans(a,b)
-    
-        # w_sin_tilde = w.translate(trans)
-        w_sin_tilde = w
-        w_sin_tilde_sin_signos = w_sin_tilde.replace('.', '').replace(',', '').replace(';', '').replace('?', '')
-        w_sin_tilde_sin_signos = w_sin_tilde_sin_signos.lower()
-        
-        if (w_sin_tilde_sin_signos in df_kw.iloc[0:10,0].values) & (w_sin_tilde_sin_signos in df_libros_Biblia.loc[df_libros_Biblia.n_termino!=0,:].index.values):
-            w_negrita = '**<font color="red">' + w + '</font>**'
-        elif (not(w_sin_tilde_sin_signos in df_kw.iloc[0:10,0].values)) & (w_sin_tilde_sin_signos in df_libros_Biblia.loc[df_libros_Biblia.n_termino!=0,:].index.values):
-            w_negrita = "**<font color='red'>" + w + "</font>**"
-        elif (w_sin_tilde_sin_signos in df_kw.iloc[0:10,0].values) & (not(w_sin_tilde_sin_signos in df_libros_Biblia.loc[df_libros_Biblia.n_termino!=0,:].index.values)):
-            w_negrita = '**' + w + '**'
-        else:
-            w_negrita = w
-        texto_con_negrita.append(w_negrita)
-    
-    texto_con_negrita = " ".join(texto_con_negrita)
-    
-    col_1, col_2 = st.columns([7, 3])
         
     with col_1:
-        
-        #st.write('Nombre: ', add_selectbox)
+        st.write('**Nombre:** ', add_selectbox)
         st.write('**Orden (id)**: ', list_files_all.loc[list_files_all.file_name==add_selectbox[:-4], 'id'].values[0],
                  '-- **Fecha**: ', list_files_all.loc[list_files_all.file_name==add_selectbox[:-4], 'date'].dt.strftime('%d/%m/%Y').values[0],
                  '-- **Número de palabras**: ',len(diccionario['Words']),
@@ -510,23 +473,64 @@ if inspeccionar:
         # st.write('Duración (minutos): ', np.round(float(diccionario['OffsetDuration'][-1][0])/60, 2))
         
         st.subheader('Texto')
-        st.markdown(texto_con_negrita, unsafe_allow_html=True)
-    
     
     tuples = list(zip(df_kw.Palabras, df_kw.Repeticiones_mayorado))
     wc = WordCloud(stopwords=stopwords, background_color="white", colormap="Dark2", max_font_size=100, collocations=False)
     wordcloud = wc.generate_from_frequencies(dict(tuples))
     
-    st.set_option('deprecation.showPyplotGlobalUse', False)
-    
     with col_2:
         st.subheader('WordCloud')
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis("off")
-        plt.show()
         st.pyplot()
         
         st.write('---------------------')
+        frag_audio = st.selectbox('Marcas tiempo en texto cada ... (min): ', [0, 1, 2, 5, 10])
+        
+        if frag_audio == 0:
+            texto_inicial = " ".join(diccionario['DisplayText']).replace('**', '__')
+        else:
+            texto_inicial = ''
+            sep = frag_audio*60
+            i_sep = sep*1
+            for i in range(len(diccionario['DisplayText'])):
+                if i==0:
+                    texto_inicial = '*[0 min' + ' - ' + str(int(i_sep/60)) + ' min ]*' + '<br>'
+                if diccionario['OffsetDuration'][i][0] <= i_sep:
+                    texto_inicial = texto_inicial + ' ' + diccionario['DisplayText'][i].replace('**', '__')
+                else:
+                    texto_inicial = texto_inicial + '<br>' + '*[' + str(int(i_sep/60)) + ' min - ' + str(int(i_sep/60+sep/60)) + ' min ]*' + '<br>' + diccionario['DisplayText'][i].replace('**', '__')
+                    i_sep = i_sep + sep
+            
+        
+        texto_con_negrita = []
+        for w in texto_inicial.split(" "):
+            # a,b = 'áéíóúÁÉÍÓÚ','aeiouAEIOU'
+            # trans = str.maketrans(a,b)
+        
+            # w_sin_tilde = w.translate(trans)
+            w_sin_tilde = w
+            w_sin_tilde_sin_signos = w_sin_tilde.replace('.', '').replace(',', '').replace(';', '').replace('?', '')
+            w_sin_tilde_sin_signos = w_sin_tilde_sin_signos.lower()
+            
+            if (w_sin_tilde_sin_signos in df_kw.iloc[0:10,0].values) & (w_sin_tilde_sin_signos in df_libros_Biblia.loc[df_libros_Biblia.n_termino!=0,:].index.values):
+                w_negrita = '**<font color="red">' + w + '</font>**'
+            elif (not(w_sin_tilde_sin_signos in df_kw.iloc[0:10,0].values)) & (w_sin_tilde_sin_signos in df_libros_Biblia.loc[df_libros_Biblia.n_termino!=0,:].index.values):
+                w_negrita = "**<font color='red'>" + w + "</font>**"
+            elif (w_sin_tilde_sin_signos in df_kw.iloc[0:10,0].values) & (not(w_sin_tilde_sin_signos in df_libros_Biblia.loc[df_libros_Biblia.n_termino!=0,:].index.values)):
+                w_negrita = '**' + w + '**'
+            else:
+                w_negrita = w
+            texto_con_negrita.append(w_negrita)
+        
+        texto_con_negrita = " ".join(texto_con_negrita)
+        
+    with col_1:
+        st.markdown(texto_con_negrita, unsafe_allow_html=True)
+    
+    st.set_option('deprecation.showPyplotGlobalUse', False)
+    
+    with col_2:
         st.subheader('Palabras más repetidas')
         st.dataframe(df_kw)
         st.subheader('Menciones libros Biblia')
