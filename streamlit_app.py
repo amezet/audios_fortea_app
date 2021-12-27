@@ -409,6 +409,7 @@ def read_file_audio(filename):
 ver_audio = st.sidebar.checkbox('Ver Audio', False)
 
 if ver_audio:
+    frag_audio = st.sidebar.selectbox('Marcas tiempo en texto cada ... (min): ', [0, 1, 2, 5, 10])
     audio_bytes = read_file_audio(directorio_mp3 + add_selectbox)
     st.sidebar.audio(audio_bytes, format='audio/ogg')
     
@@ -458,7 +459,20 @@ if inspeccionar:
         list_token_index.append(token)
     len(list_token_index)
     
-    texto_inicial = " ".join(diccionario['DisplayText']).replace('**', '__')
+    if frag_audio== 0:
+        texto_inicial = " ".join(diccionario['DisplayText']).replace('**', '__')
+    else:
+        texto_inicial = ''
+        sep = frag_audio*60
+        i_sep = sep*1
+        for i in range(len(diccionario['DisplayText'])):
+            if i==0:
+                texto_inicial = '*[0 min' + ' - ' + str(int(i_sep/60)) + ' min ]*' + '<br>'
+            if diccionario['OffsetDuration'][i][0] <= i_sep:
+                texto_inicial = texto_inicial + diccionario['DisplayText'][i].replace('**', '__')
+            else:
+                texto_inicial = texto_inicial + '<br>' + '*[' + str(int(i_sep/60)) + ' min - ' + str(int(i_sep/60+sep/60)) + ' min ]*' + '<br>' + diccionario['DisplayText'][i].replace('**', '__')
+                i_sep = i_sep + sep
     
     texto_con_negrita = []
     for w in texto_inicial.split(" "):
