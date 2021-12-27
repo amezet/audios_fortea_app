@@ -405,6 +405,7 @@ def read_file_audio(filename):
 #     audio_bytes = audio_file.read()
 #     return(audio_bytes)
 
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 ver_audio = st.sidebar.checkbox('Ver Audio', False)
 
