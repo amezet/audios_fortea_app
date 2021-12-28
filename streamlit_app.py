@@ -208,7 +208,7 @@ max_year = int(df.year.max())
 
 
     
-col_to_show = ['date', 'size', 'file', 'duration_min', 'libros_Biblia', 'KeyWords', 'year']
+col_to_show = ['id_Fortea', 'date', 'size', 'file', 'duration_min', 'libros_Biblia', 'KeyWords', 'year']
 
 all_libros = list(set(libros_Biblia['Libro_sin'].apply(lambda x: x.lower()).values))
 all_libros.sort()
@@ -277,7 +277,7 @@ if filtrado == False:
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['date', 'size', 'file', 'duration_min', 'year']
+            col_to_show = ['id_Fortea', 'date', 'size', 'file', 'duration_min', 'year']
         
         st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}"})
                        .set_properties(**{
