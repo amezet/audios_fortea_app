@@ -69,33 +69,6 @@ def lee_ficheros():
     list_json = list(pd.read_csv(directorio_csv + 'list_json.csv', sep=';')['json'].values)
     list_json_name = [f.replace('.json', '') for f in list_json]
     
-    df_json = pd.DataFrame({'ini_name':list_json})
-    df_json['end_name'] = ''
-    # identificacion de titulos de ficheros
-    for i in range(0, len(df_json['ini_name'])):
-        a = df_json['ini_name'][i].replace('.json', '')
-        a = a.replace('P. Fortea', '')
-        b = re.sub(pattern="[-]",
-                   repl="",
-                   string=a)
-        c = re.sub(pattern="[\d]+",
-                   repl="",
-                   string=b)
-        c = c.replace('  ', '')
-        d = re.sub(pattern="^ ",
-                   repl="",
-                   string=c)
-        e = re.sub(pattern="^, ",
-                   repl="",
-                   string=d)
-        f = re.sub(pattern=" ª parte",
-                   repl="",
-                   string=e)
-        
-        if len(f) > 1:
-            df_json['end_name'][i] = f
-        else:
-            df_json['end_name'][i] = df_json['ini_name'][i].replace('.json','')
             
     # selecciona indices de los ficheros
     indexes_json_files = [i for i in list_files_all.index if list_files_all.file_name.iloc[i] in list_json_name]
@@ -187,6 +160,10 @@ def cargar_listados(df1):
         all_Keywords.append(df_kw_i.loc[0:10, 'Palabras'].values)
     all_Keywords = list(set([item for sublist in all_Keywords for item in sublist]))
     all_Keywords.sort()
+    
+    df = df[['id_Fortea', 'date', 'size', 'file', 'duration_min', 'libros_Biblia', 'KeyWords', 'year', 'file_name']].copy()
+    
+    df['duration_min'] = np.round(df.duration_min.values, 1).astype(float)
         
     return(list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords)
 
