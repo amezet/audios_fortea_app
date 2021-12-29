@@ -67,69 +67,49 @@ def lee_ficheros():
     
     # carga list_json
     list_json = list(pd.read_csv(directorio_csv + 'list_json.csv', sep=';')['json'].values)
+    list_json_name = [f.replace('.json', '') for f in list_json]
     
-    return(list_files_all, df_dicc, libros_Biblia, list_json)
+    df_json = pd.DataFrame({'ini_name':list_json})
+    df_json['end_name'] = ''
+    # identificacion de titulos de ficheros
+    for i in range(0, len(df_json['ini_name'])):
+        a = df_json['ini_name'][i].replace('.json', '')
+        a = a.replace('P. Fortea', '')
+        b = re.sub(pattern="[-]",
+                   repl="",
+                   string=a)
+        c = re.sub(pattern="[\d]+",
+                   repl="",
+                   string=b)
+        c = c.replace('  ', '')
+        d = re.sub(pattern="^ ",
+                   repl="",
+                   string=c)
+        e = re.sub(pattern="^, ",
+                   repl="",
+                   string=d)
+        f = re.sub(pattern=" ª parte",
+                   repl="",
+                   string=e)
+        
+        if len(f) > 1:
+            df_json['end_name'][i] = f
+        else:
+            df_json['end_name'][i] = df_json['ini_name'][i].replace('.json','')
+            
+    # selecciona indices de los ficheros
+    indexes_json_files = [i for i in list_files_all.index if list_files_all.file_name.iloc[i] in list_json_name]
 
-
-list_files_all, df_dicc, libros_Biblia, list_json = lee_ficheros()
-
-
-# lista todos los json en el directorio
-#list_json = os.listdir(directorio_json)
-#list_json = list(pd.read_csv(directorio_csv + 'list_json.csv', sep=';')['json'].values)
-# lista con los nombres solos
-list_json_name = [f.replace('.json', '') for f in list_json]
-
-
-
-df_json = pd.DataFrame({'ini_name':list_json})
-df_json['end_name'] = ''
-# identificacion de titulos de ficheros
-for i in range(0, len(df_json['ini_name'])):
-    a = df_json['ini_name'][i].replace('.json', '')
-    a = a.replace('P. Fortea', '')
-    b = re.sub(pattern="[-]",
-               repl="",
-               string=a)
-    c = re.sub(pattern="[\d]+",
-               repl="",
-               string=b)
-    c = c.replace('  ', '')
-    d = re.sub(pattern="^ ",
-               repl="",
-               string=c)
-    e = re.sub(pattern="^, ",
-               repl="",
-               string=d)
-    f = re.sub(pattern=" ª parte",
-               repl="",
-               string=e)
+    # filtra dataset resumen con los json que hay transcritos
+    df = list_files_all.loc[indexes_json_files, :].copy()
     
-    if len(f) > 1:
-        df_json['end_name'][i] = f
-    else:
-        df_json['end_name'][i] = df_json['ini_name'][i].replace('.json','')
+    
+    return(list_files_all, df_dicc, libros_Biblia, df)
 
 
-
-# selecciona indices de los ficheros
-indexes_json_files = [i for i in list_files_all.index if list_files_all.file_name.iloc[i] in list_json_name]
-
-# filtra dataset resumen con los json que hay transcritos
-df = list_files_all.loc[indexes_json_files, :].copy()
-
-
-
-
-stopwords = nltk.corpus.stopwords.words('spanish')
-
-# Para el POS Tagging
-
-# jar = 'stanford-postagger-full-2020-11-17/stanford-postagger-4.2.0.jar'
-# model = 'stanford-postagger-full-2020-11-17/models/spanish-ud.tagger'
-
-# java_path = "C:/Program Files (x86)/Java/jre1.8.0_311/bin/java.exe"
-# os.environ['JAVAHOME'] = java_path
+@st.cache
+def ini_stopwords_sp():
+    stopwords = nltk.corpus.stopwords.words('spanish')
 
 
 
@@ -153,7 +133,7 @@ def spans(txt):
 
 
 @st.cache
-def cargar_listados():
+def cargar_listados(df):
 
     with open(directorio_pkl + 'list_df_kw.pkl', 'rb') as f:
         list_df_kw = pickle.load(f)
@@ -170,38 +150,51 @@ def cargar_listados():
     with open(directorio_pkl + 'list_resumen.pkl', 'rb') as f:
         list_resumen = pickle.load(f)
         
-    return(list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen)
+    df['libros_Biblia'] =''
+    for i in range(len(list_df_libros_Biblia)):
+        df_libros_Biblia = list_df_libros_Biblia[i]
+        df_libros_Biblia = (df_libros_Biblia.loc[df_libros_Biblia.n_termino>0,:].copy().reset_index())
+        
+        df.reset_index(inplace=True)
+        
+        df.loc[i, 'libros_Biblia'] = str(list(zip(df_libros_Biblia['index'], df_libros_Biblia['n_termino'])))
+        #df.loc[i, 'libros_Biblia'] = str(list(zip(df_libros_Biblia['index'], df_libros_Biblia['n_termino'])))
+        
+        df.set_index('index', inplace=True)
+        
+    df['KeyWords'] =''
+    for i in range(len(list_df_kw)):
+        df_list_df_kw = list_df_kw[i]
+        df_list_df_kw = df_list_df_kw.loc[0:10, :].copy()
+        
+        df.reset_index(inplace=True)
+        
+        df.loc[i, 'KeyWords'] = str(list(zip(df_list_df_kw['Palabras'], df_list_df_kw['Repeticiones'])))
+        
+        df.set_index('index', inplace=True)
+        
+    df['year'] = df.date.apply(lambda x: x.year)
+    
+    all_libros = list(set(libros_Biblia['Libro_sin'].apply(lambda x: x.lower()).values))
+    all_libros.sort()
 
 
-list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen = cargar_listados()
+    all_Keywords = []
+    for df_kw_i in list_df_kw:
+        all_Keywords.append(df_kw_i.loc[0:10, 'Palabras'].values)
+    all_Keywords = list(set([item for sublist in all_Keywords for item in sublist]))
+    all_Keywords.sort()
+        
+    return(list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords)
 
 
+ini_stopwords_sp()
 
-df['libros_Biblia'] =''
-for i in range(len(list_df_libros_Biblia)):
-    df_libros_Biblia = list_df_libros_Biblia[i]
-    df_libros_Biblia = (df_libros_Biblia.loc[df_libros_Biblia.n_termino>0,:].copy().reset_index())
-    
-    df.reset_index(inplace=True)
-    
-    df.loc[i, 'libros_Biblia'] = str(list(zip(df_libros_Biblia['index'], df_libros_Biblia['n_termino'])))
-    #df.loc[i, 'libros_Biblia'] = str(list(zip(df_libros_Biblia['index'], df_libros_Biblia['n_termino'])))
-    
-    df.set_index('index', inplace=True)
-    
+list_files_all, df_dicc, libros_Biblia, df = lee_ficheros()
 
-df['KeyWords'] =''
-for i in range(len(list_df_kw)):
-    df_list_df_kw = list_df_kw[i]
-    df_list_df_kw = df_list_df_kw.loc[0:10, :].copy()
-    
-    df.reset_index(inplace=True)
-    
-    df.loc[i, 'KeyWords'] = str(list(zip(df_list_df_kw['Palabras'], df_list_df_kw['Repeticiones'])))
-    
-    df.set_index('index', inplace=True)    
+list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords = cargar_listados()
 
-df['year'] = df.date.apply(lambda x: x.year)
+
 
 min_year = int(df.year.min())
 max_year = int(df.year.max())
@@ -211,15 +204,6 @@ max_id_fortea = 2100
     
 col_to_show = ['id_Fortea', 'date', 'size', 'file', 'duration_min', 'libros_Biblia', 'KeyWords', 'year']
 
-all_libros = list(set(libros_Biblia['Libro_sin'].apply(lambda x: x.lower()).values))
-all_libros.sort()
-
-
-all_Keywords = []
-for df_kw_i in list_df_kw:
-    all_Keywords.append(df_kw_i.loc[0:10, 'Palabras'].values)
-all_Keywords = list(set([item for sublist in all_Keywords for item in sublist]))
-all_Keywords.sort()
 
 
 
