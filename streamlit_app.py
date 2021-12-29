@@ -206,7 +206,8 @@ df['year'] = df.date.apply(lambda x: x.year)
 min_year = int(df.year.min())
 max_year = int(df.year.max())
 
-
+min_id_fortea = 0
+max_id_fortea = 2100
     
 col_to_show = ['id_Fortea', 'date', 'size', 'file', 'duration_min', 'libros_Biblia', 'KeyWords', 'year']
 
@@ -242,7 +243,7 @@ opciones_KeyWords = st.sidebar.multiselect('Filtrado por KeyWords', all_Keywords
 opciones_KeyWords_Y_O = st.sidebar.checkbox(' Y (marcado) -- O (desmarcado)', True)
 
 with st.container():
-    col1, col2, col3 = st.columns([10, 1, 10])
+    col1, col2, col3, col4, col5 = st.columns([10, 1, 10, 1, 10])
     
     
     with col1:
@@ -254,6 +255,11 @@ with st.container():
     with col3:
         opcion_year = st.slider('Filtrado Años', min_year, max_year, (min_year, max_year))
 
+    with col4:
+        st.empty()
+    
+    with col5:
+        opcion_id_fortea = st.select_slider('Filtrado Id Fortea', np.arange(min_id_fortea, max_id_fortea+100, 100), (min_id_fortea, max_id_fortea))
 
 
 
@@ -358,6 +364,9 @@ else:
     mask4 = (df_to_show.date.apply(lambda x: x.year) >= opcion_year[0]) & (df_to_show.date.apply(lambda x: x.year) <= opcion_year[1])
     mask = mask * mask4
     
+    mask5 = (df_to_show.id_Fortea >= opcion_id_fortea[0]) & (df_to_show.id_Fortea <= opcion_id_fortea[1])
+    mask = mask * mask5
+    
     
     with st.container():
         
@@ -367,7 +376,7 @@ else:
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['date', 'size', 'file', 'duration_min', 'year']
+            col_to_show = ['id_Fortea', 'date', 'size', 'file', 'duration_min', 'year']
         
         st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}"})
                        .set_properties(**{
