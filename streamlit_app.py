@@ -166,7 +166,7 @@ def cargar_listados(df1):
     df['duration_min'] = np.round(df.duration_min.values, 1).astype(float)
     df['size'] = np.round(df['size'].values/1024/1024, 2).astype(float)
     
-    df.rename(columns={'size': 'tamaño_Mb'}, inplace=True)
+    df.rename(columns={'size': 'tamaño_Mb', 'duration_min': 'duración_min'}, inplace=True)
         
     return(list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords)
 
@@ -185,7 +185,7 @@ max_year = int(df.year.max())
 min_id_fortea = 0
 max_id_fortea = 2100
     
-col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duration_min', 'file', 'libros_Biblia', 'KeyWords', 'year']
+col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duración_min', 'file', 'libros_Biblia', 'KeyWords', 'year']
 
 
 
@@ -214,8 +214,8 @@ with st.container():
     
     
     with col1:
-        opcion_duration = st.slider('Filtrado Duración (minutos)', int(np.floor(df.duration_min.min())), int(np.floor(df.duration_min.max())),
-                                    (int(np.floor(df.duration_min.min())), int(np.floor(df.duration_min.max()))))
+        opcion_duration = st.slider('Filtrado Duración (minutos)', int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max())),
+                                    (int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max()))))
     with col2:
         st.empty()
     
@@ -246,19 +246,19 @@ if filtrado == False:
         
         st.markdown('## <font color="red">Tabla</font>', unsafe_allow_html=True)
         st.write('Número de registros: ', df_to_show.shape[0], '/', df.shape[0],
-                 '   Horas audio totales seleccionadas: ', np.round(df_to_show.duration_min.sum()/60, 1))
+                 '   Horas audio totales seleccionadas: ', np.round(df_to_show.duración_min.sum()/60, 1))
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duration_min', 'file']
+            col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duración_min', 'file']
         
-        st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duration_min': "{:.1f}"})
+        st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
                        .set_properties(**{
                            'font-size': '10pt',
                            })), height=700)
         
         with col1:
-            counts, bins = np.histogram((df_to_show.duration_min))
+            counts, bins = np.histogram((df_to_show.duración_min))
             st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
         
         with col3:
@@ -325,7 +325,7 @@ else:
                 
         mask = mask1 & mask2
     
-    mask3 = (df_to_show.duration_min >= opcion_duration[0]) & (df_to_show.duration_min <= opcion_duration[1])
+    mask3 = (df_to_show.duración_min >= opcion_duration[0]) & (df_to_show.duración_min <= opcion_duration[1])
     mask = mask * mask3
     
     mask4 = (df_to_show.date.apply(lambda x: x.year) >= opcion_year[0]) & (df_to_show.date.apply(lambda x: x.year) <= opcion_year[1])
@@ -339,19 +339,19 @@ else:
         
         st.markdown('## <font color="red">Tabla</font>', unsafe_allow_html=True)
         st.write('Número de registros: ', df_to_show[mask].shape[0], '/', df.shape[0],
-                 '   Horas audio totales seleccionadas: ', np.round(df_to_show[mask].duration_min.sum()/60, 1))
+                 '   Horas audio totales seleccionadas: ', np.round(df_to_show[mask].duración_min.sum()/60, 1))
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duration_min', 'file']
+            col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duración_min', 'file']
         
-        st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duration_min': "{:.1f}"})
+        st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
                        .set_properties(**{
                            'font-size': '10pt',
                            })), height=700)
             
         with col1:
-            counts, bins = np.histogram((df_to_show[mask].duration_min))
+            counts, bins = np.histogram((df_to_show[mask].duración_min))
             st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
         
         with col3:
