@@ -101,10 +101,10 @@ def lee_ficheros():
     indexes_json_files = [i for i in list_files_all.index if list_files_all.file_name.iloc[i] in list_json_name]
 
     # filtra dataset resumen con los json que hay transcritos
-    df = list_files_all.loc[indexes_json_files, :].copy()
+    df1 = list_files_all.loc[indexes_json_files, :].copy()
     
     
-    return(list_files_all, df_dicc, libros_Biblia, df)
+    return(list_files_all, df_dicc, libros_Biblia, df1)
 
 
 @st.cache
@@ -134,7 +134,7 @@ def spans(txt):
 
 
 @st.cache
-def cargar_listados(df):
+def cargar_listados(df1):
 
     with open(directorio_pkl + 'list_df_kw.pkl', 'rb') as f:
         list_df_kw = pickle.load(f)
@@ -150,7 +150,9 @@ def cargar_listados(df):
         
     with open(directorio_pkl + 'list_resumen.pkl', 'rb') as f:
         list_resumen = pickle.load(f)
-        
+    
+    df = df1.copy()    
+    
     df['libros_Biblia'] =''
     for i in range(len(list_df_libros_Biblia)):
         df_libros_Biblia = list_df_libros_Biblia[i]
@@ -191,9 +193,9 @@ def cargar_listados(df):
 
 stopwords_SP = ini_stopwords_sp()
 
-list_files_all, df_dicc, libros_Biblia, df = lee_ficheros()
+list_files_all, df_dicc, libros_Biblia, df1 = lee_ficheros()
 
-list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords = cargar_listados(df)
+list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords = cargar_listados(df1)
 
 
 
