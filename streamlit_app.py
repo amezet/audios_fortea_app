@@ -164,6 +164,9 @@ def cargar_listados(df1):
     df = df[['id_Fortea', 'date', 'size', 'file', 'duration_min', 'libros_Biblia', 'KeyWords', 'year', 'file_name']].copy()
     
     df['duration_min'] = np.round(df.duration_min.values, 1).astype(float)
+    df['size'] = np.round(df['size'].values/1024/1024, 2).astype(float)
+    
+    df.rename(columns={'size': 'tamaño_Mb'}, inplace=True)
         
     return(list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords)
 
@@ -182,7 +185,7 @@ max_year = int(df.year.max())
 min_id_fortea = 0
 max_id_fortea = 2100
     
-col_to_show = ['id_Fortea', 'date', 'size', 'file', 'duration_min', 'libros_Biblia', 'KeyWords', 'year']
+col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duration_min', 'file', 'libros_Biblia', 'KeyWords']
 
 
 
@@ -247,9 +250,9 @@ if filtrado == False:
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['id_Fortea', 'date', 'size', 'file', 'duration_min', 'year']
+            col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duration_min', 'file']
         
-        st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'duration_min': "{:.1f}"})
+        st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duration_min': "{:.1f}"})
                        .set_properties(**{
                            'font-size': '10pt',
                            })), height=700)
@@ -340,9 +343,9 @@ else:
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['id_Fortea', 'date', 'size', 'file', 'duration_min', 'year']
+            col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duration_min', 'file']
         
-        st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}", 'duration_min': "{:.1f}"})
+        st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duration_min': "{:.1f}"})
                        .set_properties(**{
                            'font-size': '10pt',
                            })), height=700)
