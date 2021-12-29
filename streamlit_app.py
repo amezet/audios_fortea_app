@@ -109,7 +109,8 @@ def lee_ficheros():
 
 @st.cache
 def ini_stopwords_sp():
-    stopwords = nltk.corpus.stopwords.words('spanish')
+    stopwords_SP = nltk.corpus.stopwords.words('spanish')
+    return stopwords_SP
 
 
 
@@ -188,11 +189,11 @@ def cargar_listados(df):
     return(list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords)
 
 
-ini_stopwords_sp()
+stopwords_SP = ini_stopwords_sp()
 
 list_files_all, df_dicc, libros_Biblia, df = lee_ficheros()
 
-list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords = cargar_listados()
+list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords = cargar_listados(df)
 
 
 
@@ -469,7 +470,7 @@ if inspeccionar:
         st.subheader('Texto')
     
     tuples = list(zip(df_kw.Palabras, df_kw.Repeticiones_mayorado))
-    wc = WordCloud(stopwords=stopwords, background_color="white", colormap="Dark2", max_font_size=100, collocations=False)
+    wc = WordCloud(stopwords=stopwords_SP, background_color="white", colormap="Dark2", max_font_size=100, collocations=False)
     wordcloud = wc.generate_from_frequencies(dict(tuples))
     
     with col_2:
