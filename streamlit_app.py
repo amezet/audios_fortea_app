@@ -232,7 +232,7 @@ with st.container():
 
 
 df_to_show = df.loc[:, col_to_show].copy()
-df_to_show.sort_values(by='date', inplace=True)
+df_to_show.sort_values(by='id_Fortea', inplace=True)
 
 
 
