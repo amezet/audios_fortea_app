@@ -185,7 +185,7 @@ max_year = int(df.year.max())
 min_id_fortea = 0
 max_id_fortea = 2100
     
-col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duración_min', 'file', 'libros_Biblia', 'KeyWords', 'year']
+col_to_show = ['id_Fortea', 'file', 'duración_min', 'date', 'tamaño_Mb', 'libros_Biblia', 'KeyWords', 'year']
 
 
 
