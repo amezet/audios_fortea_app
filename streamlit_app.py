@@ -365,7 +365,10 @@ else:
         'Elegir Audio', df_to_show[mask]['file'])
     
     df_ = df.copy().reset_index(drop=True)
-    indice = df_.loc[df_.file_name == add_selectbox[:-4],:].index[0]
+    try:
+        indice = df_.loc[df_.file_name == add_selectbox[:-4],:].index[0]
+    except:
+        indice=0
     
     #st.write(indice)
 
