@@ -250,7 +250,7 @@ if filtrado == False:
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duración_min', 'file']
+            col_to_show = ['id_Fortea', 'file', 'duración_min']
         
         st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
                        .set_properties(**{
