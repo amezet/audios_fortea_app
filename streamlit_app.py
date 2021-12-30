@@ -254,7 +254,7 @@ if filtrado == False:
         
         st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
                        .set_properties(**{
-                           'font-size': '10pt',
+                           'font-size': '11pt',
                            })), height=700)
         
         with col1:
@@ -343,11 +343,11 @@ else:
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['id_Fortea', 'date', 'tamaño_Mb', 'duración_min', 'file']
+            col_to_show = ['id_Fortea', 'file', 'duración_min']
         
         st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
                        .set_properties(**{
-                           'font-size': '10pt',
+                           'font-size': '11pt',
                            })), height=700)
             
         with col1:
