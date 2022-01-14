@@ -291,8 +291,11 @@ if filtrado == False:
     
     
         
-    df_ = df.copy().reset_index(drop=True)
-    indice = df_.loc[df_.file_name == add_selectbox[:-4],:].index[0]
+    #df_ = df.copy().reset_index(drop=True)
+    try:
+        indice = df.loc[df.file_name == add_selectbox[:-4],:].index[0]
+    except:
+        indice=0
     
     #st.write(indice)
 
@@ -419,9 +422,9 @@ else:
     add_selectbox = st.sidebar.selectbox(
         'Elegir Audio', df_to_show[mask]['file'])
     
-    df_ = df.copy().reset_index(drop=True)
+    #df_ = df.copy().reset_index(drop=True)
     try:
-        indice = df_.loc[df_.file_name == add_selectbox[:-4],:].index[0]
+        indice = df.loc[df.file_name == add_selectbox[:-4],:].index[0]
     except:
         indice=0
     
