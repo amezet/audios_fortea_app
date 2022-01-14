@@ -109,11 +109,11 @@ def cargar_listados(df1):
     with open(directorio_pkl + 'list_df_kw.pkl', 'rb') as f:
         list_df_kw = pickle.load(f)
     
-    with open(directorio_pkl + 'list_texto_j.pkl', 'rb') as f:
-        list_texto_j = pickle.load(f)
+    # with open(directorio_pkl + 'list_texto_j.pkl', 'rb') as f:
+    #     list_texto_j = pickle.load(f)
         
-    with open(directorio_pkl + 'list_dic_sim.pkl', 'rb') as f:
-        list_dic_sim = pickle.load(f)    
+    # with open(directorio_pkl + 'list_dic_sim.pkl', 'rb') as f:
+    #     list_dic_sim = pickle.load(f)    
     
     with open(directorio_pkl + 'list_df_libros_Biblia.pkl', 'rb') as f:
         list_df_libros_Biblia = pickle.load(f)
@@ -165,14 +165,13 @@ def cargar_listados(df1):
     
     df.rename(columns={'size': 'tamaño_Mb', 'duration_min': 'duración_min'}, inplace=True)
         
-    return(list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords)
+    return(list_df_kw, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords)
 
 
 stopwords_SP = ini_stopwords_sp()
 
 list_files_all, df_dicc, libros_Biblia, df1 = lee_ficheros()
 
-list_df_kw, list_texto_j, list_dic_sim, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords = cargar_listados(df1)
 
 
 
@@ -463,7 +462,7 @@ if inspeccionar:
 
     
     df_kw = list_df_kw[indice].copy()
-    texto_j = list_texto_j[indice]
+    # texto_j = list_texto_j[indice]
     max_rep = max(df_kw.Repeticiones)
     df_libros_Biblia = list_df_libros_Biblia[indice].copy()
     
