@@ -494,10 +494,10 @@ if inspeccionar:
     resumen_con_negrita = " ".join(resumen_con_negrita)
     
     
-    list_token_index = []
-    for token in spans(texto_j):
-        list_token_index.append(token)
-    len(list_token_index)
+    # list_token_index = []
+    # for token in spans(texto_j):
+    #     list_token_index.append(token)
+    # len(list_token_index)
     
         
     with col_1:
