@@ -40,7 +40,7 @@ fs = s3fs.S3FileSystem(anon=False)
 st.set_page_config(
       page_title="Base Datos Audios Padre Fortea",
       layout="wide",
-      initial_sidebar_state="expanded",
+      initial_sidebar_state="auto",
   )
 
 
