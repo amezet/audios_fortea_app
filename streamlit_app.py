@@ -272,7 +272,7 @@ if filtrado == False:
         st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
                        .set_properties(**{
                            'font-size': '11pt',
-                           })), height=700)
+                           })), height=700, width=2000)
         
         
         if filtros_adicionales == True:
@@ -402,7 +402,7 @@ else:
         st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
                        .set_properties(**{
                            'font-size': '11pt',
-                           })), height=700)
+                           })), height=700, width=2000)
         
         if filtros_adicionales == True:
         
