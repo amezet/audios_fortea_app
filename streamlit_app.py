@@ -66,16 +66,13 @@ def lee_ficheros():
     libros_Biblia = pd.read_csv(directorio_csv + 'Libros_Biblia.csv', sep=';')
     
     # carga list_json
-    list_json = list(pd.read_csv(directorio_csv + 'list_json.csv', sep=';')['json'].values)
+    df_json = pd.read_csv(directorio_csv + 'list_json.csv', sep=';')
+    list_json = list(df_json['json'].values)
     list_json_name = [f.replace('.json', '') for f in list_json]
     
-            
-    # selecciona indices de los ficheros
-    indexes_json_files = [i for i in list_files_all.index if list_files_all.file_name.iloc[i] in list_json_name]
-
-    # filtra dataset resumen con los json que hay transcritos
-    df1 = list_files_all.loc[indexes_json_files, :].copy()
+    df_json['file_name'] = list_json_name
     
+    df1 = df_json.merge(list_files_all, how='left', on='file_name')
     
     return(list_files_all, df_dicc, libros_Biblia, df1)
 
@@ -199,7 +196,7 @@ st.sidebar.image(logo)
 st.sidebar.write('--------------')
 st.sidebar.subheader('Filtros')
 filtrado = st.sidebar.checkbox('Aplicar filtro')
-histogramas = st.sidebar.checkbox('Mostrar histogramas duración y años')
+
 
 
 #st.sidebar.subheader('Filtrado por libros Biblia')
@@ -210,26 +207,11 @@ opciones_libros_biblia_Y_O = st.sidebar.checkbox('Y (marcado) -- O (desmarcado)'
 opciones_KeyWords = st.sidebar.multiselect('Filtrado por KeyWords', all_Keywords)
 opciones_KeyWords_Y_O = st.sidebar.checkbox(' Y (marcado) -- O (desmarcado)', True)
 
-with st.container():
-    col1, col2, col3, col4, col5 = st.columns([10, 1, 10, 1, 10])
-    
-    
-    with col1:
-        opcion_duration = st.slider('Filtrado Duración (minutos)', int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max())),
-                                    (int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max()))))
-    with col2:
-        st.empty()
-    
-    with col3:
-        opcion_year = st.slider('Filtrado Años', min_year, max_year, (min_year, max_year))
-
-    with col4:
-        st.empty()
-    
-    with col5:
-        opcion_id_fortea = st.select_slider('Filtrado Id Fortea', np.arange(min_id_fortea, max_id_fortea+100, 100), (min_id_fortea, max_id_fortea))
-
-
+filtros_adicionales = st.sidebar.checkbox('Mostrar Filtros Adicionales')
+if filtros_adicionales==True:
+    histogramas = st.sidebar.checkbox('Mostrar histogramas duración y años')
+else:
+    histogramas = False
 
 
 df_to_show = df.loc[:, col_to_show].copy()
@@ -244,6 +226,40 @@ if filtrado == False:
         'Elegir Audio', df_to_show['file'])
 
     with st.container():
+        
+        if filtros_adicionales == True:
+            
+            st.markdown('### <font color="red">Filtros adicionales</font>', unsafe_allow_html=True)
+                
+            col1, col2, col3, col4, col5 = st.columns([10, 1, 10, 1, 10])
+            
+            with col1:
+                opcion_duration = st.slider('Filtrado Duración (minutos)', int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max())),
+                                            (int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max()))))
+                
+                if histogramas==True:
+                    counts, bins = np.histogram((df_to_show.duración_min))
+                    st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
+                    
+            with col2:
+                st.empty()
+            
+            with col3:
+                opcion_year = st.slider('Filtrado Años', min_year, max_year, (min_year, max_year))
+                
+                if histogramas==True:
+                    st.bar_chart(df_to_show.year.value_counts(sort=False), 100, 150)
+                    
+            with col4:
+                st.empty()
+            
+            with col5:
+                opcion_id_fortea = st.select_slider('Filtrado Id Fortea', np.arange(min_id_fortea, max_id_fortea+100, 100), (min_id_fortea, max_id_fortea))
+        
+        else:
+            opcion_duration = (int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max())))
+            opcion_year = (min_year, max_year)
+            opcion_id_fortea = (min_id_fortea, max_id_fortea)
         
         st.markdown('## <font color="red">Tabla</font>', unsafe_allow_html=True)
         st.write('Número de registros: ', df_to_show.shape[0], '/', df.shape[0],
@@ -281,6 +297,36 @@ if filtrado == False:
 
     
 else:
+    
+    if filtros_adicionales == True:
+        
+        st.markdown('### <font color="red">Filtros adicionales</font>', unsafe_allow_html=True)
+            
+        col1, col2, col3, col4, col5 = st.columns([10, 1, 10, 1, 10])
+        
+        with col1:
+            opcion_duration = st.slider('Filtrado Duración (minutos)', int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max())),
+                                        (int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max()))))
+                
+        with col2:
+            st.empty()
+        
+        with col3:
+            opcion_year = st.slider('Filtrado Años', min_year, max_year, (min_year, max_year))
+                
+        with col4:
+            st.empty()
+        
+        with col5:
+            opcion_id_fortea = st.select_slider('Filtrado Id Fortea', np.arange(min_id_fortea, max_id_fortea+100, 100), (min_id_fortea, max_id_fortea))
+    
+    else:
+        opcion_duration = (int(np.floor(df.duración_min.min())), int(np.floor(df.duración_min.max())))
+        opcion_year = (min_year, max_year)
+        opcion_id_fortea = (min_id_fortea, max_id_fortea)
+        
+        
+    
     if (len(opciones_libros_biblia)==0) & (len(opciones_KeyWords)==0):
         mask = np.array([True] * df.shape[0])
         
@@ -352,15 +398,17 @@ else:
                        .set_properties(**{
                            'font-size': '11pt',
                            })), height=700)
-            
-        with col1:
-            if histogramas==True:
-                counts, bins = np.histogram((df_to_show[mask].duración_min))
-                st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
         
-        with col3:
-            if histogramas==True:
-                st.bar_chart(df_to_show[mask].year.value_counts(sort=False), 100, 150)
+        if filtros_adicionales == True:
+        
+            with col1:
+                if histogramas==True:
+                    counts, bins = np.histogram((df_to_show[mask].duración_min))
+                    st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
+            
+            with col3:
+                if histogramas==True:
+                    st.bar_chart(df_to_show[mask].year.value_counts(sort=False), 100, 150)
     
     st.write('---------------------')
     st.markdown('## <font color="red">Inspección Texto</font>', unsafe_allow_html=True)
