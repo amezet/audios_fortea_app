@@ -199,6 +199,7 @@ st.sidebar.image(logo)
 st.sidebar.write('--------------')
 st.sidebar.subheader('Filtros')
 filtrado = st.sidebar.checkbox('Aplicar filtro')
+histogramas = st.sidebar.checkbox('Mostrar histogramas duración y años')
 
 
 #st.sidebar.subheader('Filtrado por libros Biblia')
@@ -232,7 +233,7 @@ with st.container():
 
 
 df_to_show = df.loc[:, col_to_show].copy()
-df_to_show.sort_values(by='id_Fortea', inplace=True)
+#df_to_show.sort_values(by='id_Fortea', inplace=True)
 
 
 
@@ -250,7 +251,7 @@ if filtrado == False:
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['id_Fortea', 'file', 'duración_min']
+            col_to_show = ['file', 'duración_min']
         
         st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
                        .set_properties(**{
@@ -258,11 +259,13 @@ if filtrado == False:
                            })), height=700)
         
         with col1:
-            counts, bins = np.histogram((df_to_show.duración_min))
-            st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
+            if histogramas==True:
+                counts, bins = np.histogram((df_to_show.duración_min))
+                st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
         
         with col3:
-            st.bar_chart(df_to_show.year.value_counts(sort=False), 100, 150)
+            if histogramas==True:
+                st.bar_chart(df_to_show.year.value_counts(sort=False), 100, 150)
     
     st.write('---------------------')
     st.markdown('## <font color="red">Inspección Texto</font>', unsafe_allow_html=True)
@@ -343,7 +346,7 @@ else:
         
         opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
         if opcion_ampliar_info_tabla==False:
-            col_to_show = ['id_Fortea', 'file', 'duración_min']
+            col_to_show = ['file', 'duración_min']
         
         st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
                        .set_properties(**{
@@ -351,11 +354,13 @@ else:
                            })), height=700)
             
         with col1:
-            counts, bins = np.histogram((df_to_show[mask].duración_min))
-            st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
+            if histogramas==True:
+                counts, bins = np.histogram((df_to_show[mask].duración_min))
+                st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
         
         with col3:
-            st.bar_chart(df_to_show[mask].year.value_counts(sort=False), 100, 150)
+            if histogramas==True:
+                st.bar_chart(df_to_show[mask].year.value_counts(sort=False), 100, 150)
     
     st.write('---------------------')
     st.markdown('## <font color="red">Inspección Texto</font>', unsafe_allow_html=True)
