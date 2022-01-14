@@ -274,14 +274,16 @@ if filtrado == False:
                            'font-size': '11pt',
                            })), height=700)
         
-        with col1:
-            if histogramas==True:
-                counts, bins = np.histogram((df_to_show.duración_min))
-                st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
         
-        with col3:
-            if histogramas==True:
-                st.bar_chart(df_to_show.year.value_counts(sort=False), 100, 150)
+        if filtros_adicionales == True:
+            with col1:
+                if histogramas==True:
+                    counts, bins = np.histogram((df_to_show.duración_min))
+                    st.bar_chart(pd.DataFrame(index=bins.astype(int)[:-1], data={'counts':counts}), 100, 150)
+            
+            with col3:
+                if histogramas==True:
+                    st.bar_chart(df_to_show.year.value_counts(sort=False), 100, 150)
     
     st.write('---------------------')
     st.markdown('## <font color="red">Inspección Texto</font>', unsafe_allow_html=True)
