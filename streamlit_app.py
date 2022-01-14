@@ -172,6 +172,7 @@ stopwords_SP = ini_stopwords_sp()
 
 list_files_all, df_dicc, libros_Biblia, df1 = lee_ficheros()
 
+list_df_kw, list_df_libros_Biblia, list_resumen, df, all_libros, all_Keywords = cargar_listados(df1)
 
 
 
