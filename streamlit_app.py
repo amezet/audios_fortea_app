@@ -43,6 +43,8 @@ st.set_page_config(
       initial_sidebar_state="auto",
   )
 
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
 
 directorio_mp3 = 'audios-fortea/mp3/'
 directorio_pkl = './data_pkl/'
@@ -82,7 +84,11 @@ def ini_stopwords_sp():
     stopwords_SP = nltk.corpus.stopwords.words('spanish')
     return stopwords_SP
 
-
+@st.cache
+def read_file_audio(filename):
+    with fs.open(filename, 'rb') as f:
+        return f.read()
+    
 
 def tokenizar_limpiar(texto_join):
     return([t for t in nltk.word_tokenize(texto_join) if t not in ['.', ',', '?']])
@@ -221,9 +227,13 @@ df_to_show = df.loc[:, col_to_show].copy()
 
 if filtrado == False:
     
-    st.sidebar.write('---------------------')
-    add_selectbox = st.sidebar.selectbox(
+    # st.sidebar.write('---------------------')
+    add_selectbox = st.selectbox(
         'Elegir Audio', df_to_show['file'])
+    
+    audio_bytes = read_file_audio(directorio_mp3 + add_selectbox)
+    st.audio(audio_bytes, format='audio/ogg')
+    
 
     with st.container():
         
@@ -265,14 +275,18 @@ if filtrado == False:
         st.write('Número de registros: ', df_to_show.shape[0], '/', df.shape[0],
                  '   Horas audio totales seleccionadas: ', np.round(df_to_show.duración_min.sum()/60, 1))
         
-        opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
-        if opcion_ampliar_info_tabla==False:
-            col_to_show = ['file', 'duración_min']
         
-        st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
-                       .set_properties(**{
-                           'font-size': '11pt',
-                           })), height=700, width=2000)
+        with st.expander('Desplegar tabla'):
+            
+        
+            opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
+            if opcion_ampliar_info_tabla==False:
+                col_to_show = ['file', 'duración_min']
+            
+            st.dataframe( (df_to_show[col_to_show].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
+                           .set_properties(**{
+                               'font-size': '11pt',
+                               })), height=700, width=2000)
         
         
         if filtros_adicionales == True:
@@ -286,7 +300,7 @@ if filtrado == False:
                     st.bar_chart(df_to_show.year.value_counts(sort=False), 100, 150)
     
     st.write('---------------------')
-    st.markdown('## <font color="red">Inspección Texto</font>', unsafe_allow_html=True)
+    st.markdown('## <font color="red">Transcripción Texto</font>', unsafe_allow_html=True)
     
     
     
@@ -388,6 +402,12 @@ else:
     mask5 = (df_to_show.id_Fortea >= opcion_id_fortea[0]) & (df_to_show.id_Fortea <= opcion_id_fortea[1])
     mask = mask * mask5
     
+    add_selectbox = st.selectbox(
+        'Elegir Audio', df_to_show[mask]['file'])
+    
+    audio_bytes = read_file_audio(directorio_mp3 + add_selectbox)
+    st.audio(audio_bytes, format='audio/ogg')
+    
     
     with st.container():
         
@@ -395,14 +415,16 @@ else:
         st.write('Número de registros: ', df_to_show[mask].shape[0], '/', df.shape[0],
                  '   Horas audio totales seleccionadas: ', np.round(df_to_show[mask].duración_min.sum()/60, 1))
         
-        opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
-        if opcion_ampliar_info_tabla==False:
-            col_to_show = ['file', 'duración_min']
+        with st.expander('Desplegar tabla'):
         
-        st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
-                       .set_properties(**{
-                           'font-size': '11pt',
-                           })), height=700, width=2000)
+            opcion_ampliar_info_tabla = st.checkbox('Ampliar información Tabla')
+            if opcion_ampliar_info_tabla==False:
+                col_to_show = ['file', 'duración_min']
+            
+            st.dataframe( (df_to_show[col_to_show][mask].style.format({'date': "{:%Y/%m/%d}", 'tamaño_Mb': "{:.2f}", 'duración_min': "{:.1f}"})
+                           .set_properties(**{
+                               'font-size': '11pt',
+                               })), height=700, width=2000)
         
         if filtros_adicionales == True:
         
@@ -416,11 +438,11 @@ else:
                     st.bar_chart(df_to_show[mask].year.value_counts(sort=False), 100, 150)
     
     st.write('---------------------')
-    st.markdown('## <font color="red">Inspección Texto</font>', unsafe_allow_html=True)
+    st.markdown('## <font color="red">Transcripción Texto</font>', unsafe_allow_html=True)
 
-    st.sidebar.write('---------------------')
-    add_selectbox = st.sidebar.selectbox(
-        'Elegir Audio', df_to_show[mask]['file'])
+    # st.sidebar.write('---------------------')
+    # add_selectbox = st.sidebar.selectbox(
+    #     'Elegir Audio', df_to_show[mask]['file'])
     
     #df_ = df.copy().reset_index(drop=True)
     try:
@@ -431,30 +453,19 @@ else:
     #st.write(indice)
 
 
-@st.cache
-def read_file_audio(filename):
-    with fs.open(filename, 'rb') as f:
-        return f.read()
 
-# @st.cache
-# def get_audio(add_selectbox):
-#     audio_file = open(directorio_wav + add_selectbox[:-4] + '.wav', 'rb')
-#     audio_bytes = audio_file.read()
-#     return(audio_bytes)
 
-st.set_option('deprecation.showPyplotGlobalUse', False)
+# ver_audio = st.sidebar.checkbox('Ver Audio', False)
 
-ver_audio = st.sidebar.checkbox('Ver Audio', False)
-
-if ver_audio:
-    audio_bytes = read_file_audio(directorio_mp3 + add_selectbox)
-    st.sidebar.audio(audio_bytes, format='audio/ogg')
+# if ver_audio:
+#     audio_bytes = read_file_audio(directorio_mp3 + add_selectbox)
+#     st.sidebar.audio(audio_bytes, format='audio/ogg')
     
 col_1, col_2 = st.columns([7, 3])
 
-with col_1:
-    inspeccionar = st.checkbox('Inspeccionar Texto', False)
-
+# with col_1:
+#     inspeccionar = st.checkbox('Inspeccionar Texto', False)
+inspeccionar = 1
 
 if inspeccionar:
 
