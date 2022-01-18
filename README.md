@@ -22,3 +22,7 @@ Funcionalidades de la aplicación:
 Vídeo con demostración del uso de la aplicación (pinchar en la imagen para ir al vídeo en Youtube):
 
 [![](Miniatura_Demo_App.jpg)](https://www.youtube.com/watch?v=_6ZdeeouQ_0)
+
+Principales herramientas utilizadas:
+
+![](Tecnologias_aplicadas.jpg)
