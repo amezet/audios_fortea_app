@@ -21,5 +21,5 @@ Funcionalidades de la aplicación:
 
 Vídeo con demostración del uso de la aplicación:
 
-![](Miniatura_Demo_App.jpg)
-https://www.youtube.com/watch?v=_6ZdeeouQ_0
+![https://www.youtube.com/watch?v=_6ZdeeouQ_0](Miniatura_Demo_App.jpg)
+
