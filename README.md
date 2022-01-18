@@ -19,8 +19,6 @@ Funcionalidades de la aplicación:
   - Orden (Identificador del audio)
 - **Histogramas** de las selecciones de audios filtrados
 
-Vídeo con demostración del uso de la aplicación:
+Vídeo con demostración del uso de la aplicación (pinchar en la imagen para ir al vídeo en Youtube):
 
 [![](Miniatura_Demo_App.jpg)](https://www.youtube.com/watch?v=_6ZdeeouQ_0)
-
-https://www.youtube.com/watch?v=_6ZdeeouQ_0
