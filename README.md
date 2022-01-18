@@ -5,7 +5,7 @@
 https://share.streamlit.io/amezet/audios_fortea_app/main
 
 ## Funcionalidades de la aplicación:
-- **Recopilación de todos los audios** de sermones y conferencias en un solo lugar (1876 audios hasta la fecha)
+- **Recopilación de todos los audios** de sermones y conferencias en un solo lugar (1879 audios hasta la fecha)
 - **Transcripción** de todos los audios para echar un vistazo rápido al contenido del mismo
 - Analítica con búsqueda de **palabas clave y menciones de textos bíblicos**
 - **Búsqueda avanzada (filtros)** de audios por palabras clave y/o textos bíblicos
