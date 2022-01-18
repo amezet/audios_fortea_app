@@ -18,3 +18,7 @@ Funcionalidades de la aplicación:
   - Fechas
   - Orden (Identificador del audio)
   - Histogramas de las selecciones de audios filtrados
+
+Vídeo con demostración del uso de la aplicación:
+
+https://www.youtube.com/watch?v=_6ZdeeouQ_0
